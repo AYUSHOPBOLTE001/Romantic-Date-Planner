@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>A Special Question for You 💕 | Date Proposal & Planner</title>
+  
+  <!-- Favicon & Meta -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💌</text></svg>">
+  <meta name="theme-color" content="#f43f5e">
+  <meta name="description" content="A special romantic date invitation planner created just for you.">
+
+  <!-- Google Fonts: Inter & Outfit & Caveat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Ambient Romantic Glows -->
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+  <div class="glow-orb orb-3"></div>
+
+  <!-- Background Floating Hearts Canvas -->
+  <canvas id="hearts-canvas"></canvas>
+
+  <div class="app-container">
+    <!-- Top Progress Indicator (Shown from Step 2 onwards) -->
+    <header class="top-nav" id="top-nav">
+      <div class="brand">
+        <span class="heart-pulse">💖</span>
+        <span class="brand-text">Our Special Date</span>
+      </div>
+      <div class="step-progress" id="step-progress" style="display: none;">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <span class="step-count" id="step-indicator">Step 1 of 4</span>
+      </div>
+    </header>
+
+    <!-- Main Dynamic Content Wrapper -->
+    <main class="main-content">
+      
+      <!-- ==============================================
+           STEP 1: THE PROPOSAL (Dodging "No" Button)
+      =============================================== -->
+      <section class="card step-section active" id="step-proposal">
+        <div class="badge-tag">💌 Strictly Confidential Proposal</div>
+        
+        <div class="proposal-hero">
+          <div class="avatar-couple">
+            <span class="couple-emoji bounce-anim">✨🌹✨</span>
+          </div>
+          <h1 class="main-title">Hey Beautiful... <br><span class="gradient-text">Will you go on a date with me?</span></h1>
+          <p class="subtitle">I promise good vibes, great conversations, delicious food, and zero boring moments! 🥰</p>
+        </div>
+
+        <!-- Tease Message Badge (Appears when she tries to click No) -->
+        <div class="dodge-feedback" id="dodge-feedback">
+          <span id="dodge-message">Wrong button! Try the other one 👉👈</span>
+        </div>
+
+        <!-- Decision Interactive Action Area -->
+        <div class="action-arena" id="action-arena">
+          <button type="button" class="btn btn-yes" id="btn-yes">
+            <span class="btn-icon">💖</span>
+            <span class="btn-text">YES, Absolutely!</span>
+          </button>
+
+          <button type="button" class="btn btn-no" id="btn-no">
+            <span class="btn-text">No</span>
+          </button>
+        </div>
+
+        <p class="hint-text">P.S. There is only one scientifically proven correct answer above 😉</p>
+      </section>
+
+      <!-- ==============================================
+           STEP 2: DATE PICKER (CALENDAR)
+      =============================================== -->
+      <section class="card step-section" id="step-calendar">
+        <div class="section-header">
+          <span class="section-step-badge">STEP 1 / 4</span>
+          <h2>Pick Our Special Day 🗓️</h2>
+          <p class="section-desc">When are you free to make some sweet memories?</p>
+        </div>
+
+        <!-- Quick Weekend Chips -->
+        <div class="quick-chips-wrapper">
+          <span class="chips-label">Quick select:</span>
+          <div class="quick-chips" id="quick-date-chips">
+            <!-- Dynamically populated with upcoming weekend days -->
+          </div>
+        </div>
+
+        <!-- Custom Calendar Container -->
+        <div class="calendar-card">
+          <div class="calendar-nav">
+            <button type="button" class="cal-nav-btn" id="cal-prev" aria-label="Previous Month">❮</button>
+            <h3 class="cal-month-title" id="cal-month-display">Month Year</h3>
+            <button type="button" class="cal-nav-btn" id="cal-next" aria-label="Next Month">❯</button>
+          </div>
+
+          <div class="calendar-grid-header">
+            <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+          </div>
+
+          <div class="calendar-days" id="calendar-days-grid">
+            <!-- Dynamically generated days -->
+          </div>
+        </div>
+
+        <div class="selected-pill-preview" id="selected-date-preview">
+          <span>Selected Date:</span> <strong id="preview-date-text">Please pick a day</strong>
+        </div>
+
+        <div class="nav-buttons">
+          <button type="button" class="btn btn-primary" id="btn-to-time" disabled>
+            Next: Pick Time ⏰
+          </button>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           STEP 3: TIME PICKER (SAMSUNG ALARM CIRCULAR DIAL)
+      =============================================== -->
+      <section class="card step-section" id="step-time">
+        <div class="section-header">
+          <span class="section-step-badge">STEP 2 / 4</span>
+          <h2>Set Our Meeting Time ⏰</h2>
+          <p class="section-desc">Turn the circular dial just like setting a Samsung alarm!</p>
+        </div>
+
+        <!-- Time Picker Display & Mode Switcher -->
+        <div class="clock-display-bar">
+          <div class="time-readout">
+            <button type="button" class="time-digit-btn active" id="btn-mode-hour">
+              <span id="readout-hour">06</span>
+              <small>HOUR</small>
+            </button>
+            <span class="time-colon">:</span>
+            <button type="button" class="time-digit-btn" id="btn-mode-minute">
+              <span id="readout-minute">30</span>
+              <small>MIN</small>
+            </button>
+          </div>
+
+          <!-- AM/PM Toggle Pill -->
+          <div class="ampm-toggle">
+            <button type="button" class="ampm-btn" id="btn-am">AM</button>
+            <button type="button" class="ampm-btn active" id="btn-pm">PM</button>
+          </div>
+        </div>
+
+        <!-- Circular Clock Dial Component -->
+        <div class="clock-dial-container">
+          <div class="clock-face" id="clock-face">
+            <!-- Center Pivot Hub -->
+            <div class="clock-center-dot"></div>
+            <!-- Pointer Hand line and selector knob -->
+            <div class="clock-hand" id="clock-hand">
+              <div class="clock-knob"></div>
+            </div>
+            <!-- Clock numbers dynamically positioned here -->
+            <div class="clock-numbers" id="clock-numbers"></div>
+          </div>
+        </div>
+
+        <!-- Quick Slot Presets -->
+        <div class="time-presets">
+          <button type="button" class="preset-chip" data-time="12:30" data-ampm="PM">☀️ Lunch (12:30 PM)</button>
+          <button type="button" class="preset-chip" data-time="04:30" data-ampm="PM">☕ Evening (4:30 PM)</button>
+          <button type="button" class="preset-chip active-preset" data-time="06:30" data-ampm="PM">🌅 Sunset (6:30 PM)</button>
+          <button type="button" class="preset-chip" data-time="08:00" data-ampm="PM">🕯️ Dinner (8:00 PM)</button>
+        </div>
+
+        <div class="nav-buttons double-btn">
+          <button type="button" class="btn btn-secondary" id="btn-back-to-calendar">Back</button>
+          <button type="button" class="btn btn-primary" id="btn-to-place">Next: Choose Place 📍</button>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           STEP 4: PLACE SELECTION
+      =============================================== -->
+      <section class="card step-section" id="step-place">
+        <div class="section-header">
+          <span class="section-step-badge">STEP 3 / 4</span>
+          <h2>Where Should We Go? 📍</h2>
+          <p class="section-desc">Pick your vibe for our special rendezvous</p>
+        </div>
+
+        <!-- Place Cards Grid -->
+        <div class="places-grid">
+          <!-- Option 1: Bangla Sahib -->
+          <label class="place-card">
+            <input type="radio" name="place_choice" value="Gurudwara Shri Bangla Sahib 🛕">
+            <div class="card-inner">
+              <div class="place-icon">🛕</div>
+              <div class="place-info">
+                <h3>Gurudwara Shri Bangla Sahib</h3>
+                <p>Serene vibes, peaceful evening by the Sarovar, divine blessed atmosphere & delicious Kada Prashad.</p>
+              </div>
+              <div class="check-mark">✓</div>
+            </div>
+          </label>
+
+          <!-- Option 2: Connaught Place (CP), Delhi -->
+          <label class="place-card selected">
+            <input type="radio" name="place_choice" value="Connaught Place (CP), Delhi 🏛️" checked>
+            <div class="card-inner">
+              <div class="place-icon">🏛️</div>
+              <div class="place-info">
+                <h3>Connaught Place (CP), Delhi</h3>
+                <p>Strolling through iconic colonial colonnades, vibrant streets, central park, bookshops & lively nightlife.</p>
+              </div>
+              <div class="check-mark">✓</div>
+            </div>
+          </label>
+
+          <!-- Option 3: Cute Aesthetic Cafe -->
+          <label class="place-card">
+            <input type="radio" name="place_choice" value="Cute Aesthetic Cafe ☕🍰">
+            <div class="card-inner">
+              <div class="place-icon">☕🍰</div>
+              <div class="place-info">
+                <h3>Cute Aesthetic Cafe</h3>
+                <p>Warm ambient lighting, artisanal coffees, delicious desserts, cozy corners and intimate deep talks.</p>
+              </div>
+              <div class="check-mark">✓</div>
+            </div>
+          </label>
+
+          <!-- Option 4: Custom Choice -->
+          <label class="place-card custom-place-card" id="custom-place-option">
+            <input type="radio" name="place_choice" value="Custom">
+            <div class="card-inner">
+              <div class="place-icon">✨✍️</div>
+              <div class="place-info">
+                <h3>Have Another Favorite Spot?</h3>
+                <p>Tell me anywhere you've been wanting to visit — your wish is my command!</p>
+              </div>
+              <div class="check-mark">✓</div>
+            </div>
+          </label>
+        </div>
+
+        <!-- Custom Suggestion Input Box -->
+        <div class="custom-input-box" id="custom-place-container" style="display: none;">
+          <label for="custom-place-input">Type your dream place or location:</label>
+          <input type="text" id="custom-place-input" placeholder="e.g. Hauz Khas Village, Sunder Nursery, Aerocity..." maxlength="60">
+        </div>
+
+        <div class="nav-buttons double-btn">
+          <button type="button" class="btn btn-secondary" id="btn-back-to-time">Back</button>
+          <button type="button" class="btn btn-primary" id="btn-to-food">Next: Choose Food 😋</button>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           STEP 5: FOOD & CRAVINGS SELECTION
+      =============================================== -->
+      <section class="card step-section" id="step-food">
+        <div class="section-header">
+          <span class="section-step-badge">STEP 4 / 4</span>
+          <h2>What Should We Feast On? 😋</h2>
+          <p class="section-desc">Select all cravings that tempt you (you can pick multiple!)</p>
+        </div>
+
+        <!-- Food Category 1: Street Snacks -->
+        <div class="food-category-block">
+          <div class="category-heading">
+            <span class="cat-icon">🍟</span>
+            <span class="cat-title">Snacks & Street Food</span>
+          </div>
+          <div class="food-chips-grid">
+            <button type="button" class="food-item-chip" data-category="Snacks" data-name="Golgappe">
+              <span class="food-emoji">🥟</span>
+              <span class="food-name">Golgappe</span>
+            </button>
+            <button type="button" class="food-item-chip" data-category="Snacks" data-name="Chaat">
+              <span class="food-emoji">🥗</span>
+              <span class="food-name">Chaat</span>
+            </button>
+            <button type="button" class="food-item-chip" data-category="Snacks" data-name="Momos">
+              <span class="food-emoji">🥟</span>
+              <span class="food-name">Momos</span>
+            </button>
+            <button type="button" class="food-item-chip" data-category="Snacks" data-name="Pizza">
+              <span class="food-emoji">🍕</span>
+              <span class="food-name">Pizza</span>
+            </button>
+            <button type="button" class="food-item-chip" data-category="Snacks" data-name="Burger">
+              <span class="food-emoji">🍔</span>
+              <span class="food-name">Burger</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Food Category 2: Main Course -->
+        <div class="food-category-block">
+          <div class="category-heading">
+            <span class="cat-icon">🍛</span>
+            <span class="cat-title">Hearty Main Course</span>
+          </div>
+          <div class="food-chips-grid">
+            <button type="button" class="food-item-chip" data-category="Main" data-name="Dosa">
+              <span class="food-emoji">🥞</span>
+              <span class="food-name">Dosa</span>
+            </button>
+            <button type="button" class="food-item-chip" data-category="Main" data-name="Chole Bhature">
+              <span class="food-emoji">🫓</span>
+              <span class="food-name">Chole Bhature</span>
+            </button>
+            <button type="button" class="food-item-chip" data-category="Main" data-name="Rajma Chawal">
+              <span class="food-emoji">🍚</span>
+              <span class="food-name">Rajma Chawal</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Food Category 3: Sweets & Desserts -->
+        <div class="food-category-block">
+          <div class="category-heading">
+            <span class="cat-icon">🍨</span>
+            <span class="cat-title">Sweet Cravings</span>
+          </div>
+          <div class="food-chips-grid">
+            <button type="button" class="food-item-chip" data-category="Sweets" data-name="Brownie">
+              <span class="food-emoji">🍫</span>
+              <span class="food-name">Brownie</span>
+            </button>
+            <button type="button" class="food-item-chip" data-category="Sweets" data-name="Ice Cream">
+              <span class="food-emoji">🍨</span>
+              <span class="food-name">Ice Cream</span>
+            </button>
+            <button type="button" class="food-item-chip" data-category="Sweets" data-name="Softy">
+              <span class="food-emoji">🍦</span>
+              <span class="food-name">Softy Cone</span>
+            </button>
+            <button type="button" class="food-item-chip" data-category="Sweets" data-name="Rasmalai">
+              <span class="food-emoji">🍮</span>
+              <span class="food-name">Rasmalai</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Surprise Me Option -->
+        <div class="surprise-toggle-box">
+          <button type="button" class="btn-surprise-me" id="btn-surprise-food">
+            <span>🎁 Or Surprise Me with Your Favorites!</span>
+          </button>
+        </div>
+
+        <!-- Secret Demands / Note to Ayush -->
+        <div class="secret-wishes-box">
+          <label for="secret-demands">
+            <span>💌 Secret Demands / Note to Ayush (Optional):</span>
+            <small>Any song requests, fun ideas, or anything you'd like to tell him?</small>
+          </label>
+          <textarea id="secret-demands" rows="2" placeholder="e.g. Any favorite songs for the drive, or fun wishes... 🎶"></textarea>
+        </div>
+
+        <div class="nav-buttons double-btn">
+          <button type="button" class="btn btn-secondary" id="btn-back-to-place">Back</button>
+          <button type="button" class="btn btn-primary" id="btn-finish-plan">Seal Our Date! 💖</button>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           STEP 5: VIP BOARDING PASS & CONFIRMATION
+      =============================================== -->
+      <section class="card step-section" id="step-boarding-pass">
+        
+        <div class="celebration-header">
+          <div class="success-icon-badge">🎉</div>
+          <h2 class="celebration-title">YAAAY! IT'S A DATE! 🎉❤️</h2>
+          
+          <!-- Romantic Confirmed Plan Subtext -->
+          <div class="screen-message-bubble">
+            <p id="end-screen-message">
+              Our date plan is officially sealed and locked in! Can't wait to see you and spend the most unforgettable time together. 🥰✨
+            </p>
+            <div class="quote-signature">— Sent to Ayush Singh</div>
+          </div>
+        </div>
+
+        <!-- VIP Date Boarding Pass Ticket -->
+        <div class="boarding-pass">
+          <div class="ticket-header">
+            <div class="ticket-logo">
+              <span>✈️ ROMANTIC DATE PASS</span>
+            </div>
+            <div class="ticket-class">FIRST CLASS VIP</div>
+          </div>
+
+          <div class="ticket-cutout-top"></div>
+
+          <div class="ticket-body">
+            <div class="ticket-row passenger-row">
+              <div class="ticket-col">
+                <span class="label">PASSENGER</span>
+                <span class="value highlight">The Prettiest Girl In The World 💕</span>
+              </div>
+              <div class="ticket-col text-right">
+                <span class="label">STATUS</span>
+                <span class="value confirmed-badge">CONFIRMED ✓</span>
+              </div>
+            </div>
+
+            <div class="ticket-row">
+              <div class="ticket-col">
+                <span class="label">DATE</span>
+                <span class="value" id="pass-date">Saturday, Oct 24</span>
+              </div>
+              <div class="ticket-col text-right">
+                <span class="label">TIME</span>
+                <span class="value" id="pass-time">06:30 PM</span>
+              </div>
+            </div>
+
+            <div class="ticket-row">
+              <div class="ticket-col full-width">
+                <span class="label">DESTINATION / PLACE</span>
+                <span class="value" id="pass-place">Connaught Place (CP), Delhi 🏛️</span>
+              </div>
+            </div>
+
+            <div class="ticket-row" id="pass-food-row">
+              <div class="ticket-col full-width">
+                <span class="label">FOOD & CRAVINGS</span>
+                <span class="value food-val" id="pass-food">Golgappe, Dosa, Rasmalai 😋</span>
+              </div>
+            </div>
+
+            <div class="ticket-row" id="pass-notes-row" style="display: none;">
+              <div class="ticket-col full-width">
+                <span class="label">SPECIAL NOTE</span>
+                <span class="value notes-val" id="pass-notes"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dotted Divider with Notches -->
+          <div class="ticket-divider">
+            <div class="notch notch-left"></div>
+            <div class="dashed-line"></div>
+            <div class="notch notch-right"></div>
+          </div>
+
+          <div class="ticket-footer">
+            <div class="barcode-box">
+              <div class="fake-barcode"></div>
+              <span class="barcode-number">AYUSH-LOVES-YOU-100%</span>
+            </div>
+            <div class="ticket-stamp">
+              <span class="stamp-circle">APPROVED<br>WITH LOVE</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cute WhatsApp Instruction Card for Her -->
+        <div class="whatsapp-instruction-card">
+          <div class="inst-pill">
+            <span class="inst-icon">💌</span>
+            <span>How to lock it in:</span>
+          </div>
+          <p class="inst-text">
+            Clicking below will open WhatsApp with our special date plan already formatted for Ayush. <strong>All you have to do is hit "Send" in WhatsApp!</strong> 🥰
+          </p>
+          <div class="arrow-indicator">👇 Tap below to send our date pass 👇</div>
+        </div>
+
+        <!-- Instant WhatsApp Dispatch Button & Sharing Options -->
+        <div class="dispatch-actions">
+          <a href="#" class="btn btn-whatsapp" id="btn-whatsapp-dispatch" target="_blank" rel="noopener noreferrer">
+            <svg class="wa-icon" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+              <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.173.086.275.072.376-.044.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.043.073.043.419-.101.824z"/>
+            </svg>
+            <span>Send Plan Directly to Ayush on WhatsApp 💬</span>
+          </a>
+
+          <div class="secondary-actions-row">
+            <button type="button" class="btn btn-secondary-outline" id="btn-download-ics">
+              📅 Add to Calendar (.ics)
+            </button>
+            <button type="button" class="btn btn-secondary-outline" id="btn-copy-itinerary">
+              📋 Copy Itinerary
+            </button>
+          </div>
+        </div>
+
+        <p class="final-footnote">
+          Can't wait to see you! If you ever want to change anything, you have lifetime unlimited free revisions. 💕
+        </p>
+
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <span>Crafted with pure ❤️ for the sweetest date ever</span>
+    </footer>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification" id="toast">Copied to clipboard! 📋</div>
+
+  <!-- Scripts -->
+  <script src="js/audio.js"></script>
+  <script src="js/calendar.js"></script>
+  <script src="js/clock-dial.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
